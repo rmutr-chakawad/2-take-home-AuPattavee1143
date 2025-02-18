@@ -11,7 +11,7 @@ class ProductsModel {
     }else{
       var obj = ProductsModel(
         id: product['id'], 
-        productname: product['productName'], 
+        productname: product['productname'], 
         price: product['price']);
         return obj;
     }

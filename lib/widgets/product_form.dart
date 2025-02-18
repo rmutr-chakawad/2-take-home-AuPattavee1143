@@ -84,6 +84,6 @@ class _ProductFormState extends State<ProductForm> {
         
         Navigator.of(context).pop();
       }, 
-      child: const Text('เพิ่ม'));
+      child: const Text('ยกเลิก'));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:products_firestore_app/models/products_model.dart';
 import 'package:products_firestore_app/service/database.dart';
 import 'package:products_firestore_app/widgets/product_Item.dart';
 
@@ -8,7 +9,7 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Database db = Database.myInstance;
-    var myStream = db.getAllProductStream();
+    Stream<List<ProductsModel>> myStream = db.getAllProductStream();
 
     return Container(
       padding: const EdgeInsets.only(top: 10),
