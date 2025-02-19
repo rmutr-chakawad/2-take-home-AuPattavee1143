@@ -4,8 +4,8 @@ import 'package:products_firestore_app/service/database.dart';
 
 class ProductForm extends StatefulWidget {
 
-  ProductsModel? product;
-  ProductForm({super.key, this.product});
+  final ProductsModel? product;
+  const ProductForm({super.key, this.product});
 
   @override
   State<ProductForm> createState() => _ProductFormState();
@@ -15,6 +15,7 @@ class _ProductFormState extends State<ProductForm> {
   Database db = Database.myInstance;
   var nameController = TextEditingController();
   var priceController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -33,10 +34,11 @@ class _ProductFormState extends State<ProductForm> {
 
   @override
   Widget build(BuildContext context) {
+    bool isEditing = widget.product != null;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(widget.product == null ? 'เพิ่มสินค้า' : 'เเก้ไข ${widget.product!.productname}'),
+        Text(isEditing ? 'เเก้ไขสินค้า "${widget.product!.productname}"' : 'เพิ่มสินค้า'),
         TextField(
           controller: nameController,
           keyboardType: TextInputType.text,
@@ -47,43 +49,43 @@ class _ProductFormState extends State<ProductForm> {
           keyboardType: TextInputType.text,
           decoration: const InputDecoration(labelText: 'ราคาสินค้า'),
         ),
-        const SizedBox(height: 5,),
+        const SizedBox(height: 20,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            showbntOK(context),
-            const SizedBox(width: 10,),
-            showbtncancel(context,)
+            showbtncancel(context),
+            const SizedBox(width: 50,),
+            showbntOK(context, isEditing),
           ],
         ),
       ],
     );
   }
 
-  Widget showbntOK(BuildContext context){
+  Widget showbntOK(BuildContext context, bool isEditing){
     return ElevatedButton(
       onPressed: () async{
-        String newId = 'PD${DateTime.now().microsecondsSinceEpoch.toString()}';
-        await db.setProduct(
-          product: ProductsModel(
-            id: widget.product == null ? newId : widget.product!.id, 
-            productname: nameController.text, 
-            price: double.tryParse(priceController.text) ?? 0
-          )
+        String newId = isEditing ? widget.product!.id : 'PD${DateTime.now().microsecondsSinceEpoch.toString()}';
+        ProductsModel product = ProductsModel(
+          id: newId,
+          productname: nameController.text, 
+          price: double.tryParse(priceController.text) ?? 0
         );
+        await db.setProduct(product: product);
         nameController.clear();
         priceController.clear();
         Navigator.of(context).pop();
       }, 
-      child: const Text('เพิ่ม'));
-  }
+      child: Text(isEditing ? 'บันทึก' : 'เพิ่ม' )
+      );
+    }
 
   Widget showbtncancel(BuildContext context){
     return ElevatedButton(
       onPressed: (){
-        
         Navigator.of(context).pop();
       }, 
       child: const Text('ยกเลิก'));
   }
+
 }

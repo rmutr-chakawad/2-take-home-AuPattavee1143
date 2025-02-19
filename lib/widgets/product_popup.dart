@@ -22,7 +22,7 @@ class ProductPopup extends StatelessWidget {
           color: Colors.white
         ),
         height: MediaQuery.of(context).size.height * 0.3,
-        child: ProductForm(),
+        child: ProductForm(product: product),
       ),
     );
   }

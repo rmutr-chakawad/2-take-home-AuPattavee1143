@@ -22,8 +22,10 @@ class _HomepageState extends State<Homepage> {
               builder: (context)=> ProductPopup()
               );
           }, 
-          icon: const Icon(Icons.add))
-      ],),
+          icon: const Icon(Icons.add)),
+      ],
+        backgroundColor: Colors.blueGrey
+      ),
       body: const ProductList(),
     );
   }
